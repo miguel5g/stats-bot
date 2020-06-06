@@ -1,1 +1,1 @@
-export {} from '';
+export * as replaceAll from './ReplaceAll';
