@@ -15,6 +15,7 @@ Bot.commands = new Discord.Collection();
 Bot.events = new Discord.Collection();
 Bot.aliases = new Discord.Collection();
 Bot.eventsCallers = new Discord.Collection();
+Bot.channelsUpdates = new Discord.Collection();
 Bot.botConfig = botConfig;
 
 // Carregar comandos, events e listeners

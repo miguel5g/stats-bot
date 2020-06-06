@@ -5,7 +5,7 @@ const command: Command = {
   name: 'ping',
   description: 'Ver latência do bot e da api',
   usage: '<prefix>ping',
-  aliases: [],
+  aliases: ['p'],
   dm: true,
   enable: true,
   run: async (Bot, msg, args) => {

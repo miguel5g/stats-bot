@@ -9,6 +9,7 @@ declare module 'discord.js' {
     events: Collection<string, BotEvent>;
     aliases: Collection<string, string>;
     eventsCallers: Collection<string, string[]>;
+    channelsUpdates: Collection<string, number>;
     botConfig: BotConfig;
     startTime: number;
   }
