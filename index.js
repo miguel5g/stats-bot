@@ -1,0 +1,2 @@
+// Start
+require('./build/Bot');
