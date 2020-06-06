@@ -11,6 +11,7 @@ export interface BotConfig {
 
   server: {
     enable: boolean,
+    port: number,
   },
 
   devlopment: {
@@ -30,6 +31,7 @@ const botConfig: BotConfig = {
 
   server: {
     enable: process.env.ENABLE_SERVER === 'true',
+    port: Number(process.env.PORT) || 3333
   },
 
   devlopment: {
@@ -41,5 +43,9 @@ const botConfig: BotConfig = {
 };
 
 if (botConfig.devlopment.enable) console.warn('⚠ Modo de desenvolvimento! ⚠');
+
+const serverConfig = botConfig.server;
+
+export { serverConfig as serverConfig };
 
 export default botConfig;
