@@ -42,6 +42,7 @@ export interface GuildData {
 export interface ChannelData {
   id: string,
   guild_id: string,
+  type: string,
   average: number,
   msg_per_hour: number,
   last_update: number,

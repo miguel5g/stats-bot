@@ -62,6 +62,7 @@ const event: BotEvent = {
       const newChannel: ChannelData = {
         id: msg.channel.id,
         guild_id: message.guild_id,
+        type: msg.channel.type,
         average: 0,
         msg_per_hour: 0,
         last_update: Date.now(),

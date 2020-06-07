@@ -7,6 +7,7 @@ export async function up(knex: knex) {
       .notNullable()
       .references('id')
       .inTable('guilds');
+    table.string('type').notNullable();
     table.float('average').notNullable();
     table.integer('msg_per_hour').notNullable();
     table.integer('last_update').notNullable();
