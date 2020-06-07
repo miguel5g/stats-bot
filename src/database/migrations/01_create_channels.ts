@@ -8,6 +8,7 @@ export async function up(knex: knex) {
       .references('id')
       .inTable('guilds');
     table.float('average').notNullable();
+    table.integer('msg_per_hour').notNullable();
     table.integer('last_update').notNullable();
   });
 };

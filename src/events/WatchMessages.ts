@@ -35,10 +35,16 @@ const event: BotEvent = {
       created_at: Date.now(),
     };
 
+    // Inserir a nova mensagem no banco de dados
     await db('messages').insert(message);
 
-    const userData = await db('users').select('*').where('id', '=', msg.author.id);
+    // Verificar se o usuário existe
+    const userData: UserData = await db('users')
+      .select('*')
+      .where('id', '=', msg.author.id)
+      .first();
 
+    // Se não existir criar novo usuário
     if (!userData) {
       const user: UserData = {
         id: msg.author.id,
@@ -48,33 +54,21 @@ const event: BotEvent = {
       await db('users').insert(user);
     }
 
-    const lastChannelUpdate = Bot.channelsUpdates.get(msg.channel.id);
+    // Procurar canal
+    const result = await db('channels').where('id', '=', msg.channel.id).first();
 
-    if (!lastChannelUpdate || Date.now() - lastChannelUpdate > 120 * 1000) {
-      const channelData: ChannelData = {
+    // Verificar se canal existe no banco de dados e se não cria-lo
+    if (!result) {
+      const newChannel: ChannelData = {
         id: msg.channel.id,
-        guild_id: msg.guild?.id || 'default',
+        guild_id: message.guild_id,
         average: 0,
+        msg_per_hour: 0,
         last_update: Date.now(),
       };
 
-      Bot.channelsUpdates.set(channelData.id, channelData.last_update);
-
-      const lastMessages: MessageData[] = await db('messages')
-        .select('*')
-        .where('guild_id', '=', channelData.guild_id)
-        .where('channel_id', '=', channelData.id)
-        .where('created_at', '>=', Date.now() - (60 * 60 * 1000))
-        .distinct();
-
-      channelData.average = lastMessages.length / 60;
-
-      if (!lastChannelUpdate) {
-        await db('channels').insert(channelData);
-      } else {
-        await db('channels').update(channelData);
-      }
-    };
+      await db('channels').insert(newChannel);
+    }
   },
 };
 

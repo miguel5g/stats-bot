@@ -62,4 +62,24 @@ export default (Bot: Client): void => {
     }
   });
 
+  Bot.on('guildCreate', (guild) => {
+    const events = Bot.eventsCallers.get('guildCreate');
+
+    if (events) {
+      events.map((event) => {
+        Bot.events.get(event)?.run(Bot, guild);
+      });
+    }
+  });
+
+  Bot.on('guildDelete', (guild) => {
+    const events = Bot.eventsCallers.get('guildDelete');
+
+    if (events) {
+      events.map((event) => {
+        Bot.events.get(event)?.run(Bot, guild);
+      });
+    }
+  });
+
 };

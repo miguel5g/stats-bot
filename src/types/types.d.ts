@@ -34,12 +34,16 @@ export interface BotEvent {
 export interface GuildData {
   id: string,
   prefix: string,
+  best_t_channel: string,
+  best_v_channel: string,
+  last_update: number,
 }
 
 export interface ChannelData {
   id: string,
   guild_id: string,
   average: number,
+  msg_per_hour: number,
   last_update: number,
 }
 

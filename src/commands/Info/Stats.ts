@@ -10,7 +10,7 @@ const command: Command = {
   dm: false,
   enable: true,
   run: async (Bot, msg, args) => {
-  
+
   },
 };
 

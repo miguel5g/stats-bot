@@ -2,7 +2,7 @@ import { BotEvent } from "../types/types";
 
 const event: BotEvent = {
   name: 'Ready',
-  description: '',
+  description: 'Evento chamado qunado o Bot inicia',
   caller: 'ready',
   enable: true,
   run: (Bot) => {
