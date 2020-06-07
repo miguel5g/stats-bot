@@ -4,7 +4,7 @@ import { BotEvent, GuildData, MessageData, UserData, ChannelData } from "../type
 import db from '../database/Connection';
 
 const event: BotEvent = {
-  name: 'Message',
+  name: 'WatchMessage',
   description: 'Evento chamado quando alguém envia uma messagem',
   caller: 'message',
   enable: true,
