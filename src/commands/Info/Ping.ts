@@ -8,7 +8,7 @@ const command: Command = {
   aliases: ['p'],
   dm: true,
   enable: true,
-  run: async (Bot, msg, args) => {
+  run: async (Bot, msg) => {
     const calcMsg = await msg.channel.send('> Carregando...');
     const latBot = calcMsg.createdTimestamp - msg.createdTimestamp;
     const latApi = Math.round(Bot.ws.ping);
