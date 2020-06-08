@@ -1,7 +1,13 @@
 import { Client } from 'discord.js';
 
-import { BotEvent, ChannelData, MessageData, GuildData } from "../types/types";
+import { BotEvent, ChannelData, MessageData, GuildData, GuildUserData } from "../types/types";
 import db from '../database/Connection';
+
+const updateTimes = {
+  guilds: 25,
+  channels: 15,
+  verify: 10,
+};
 
 class Data {
   private Bot: Client;
@@ -15,7 +21,7 @@ class Data {
       try {
         const outChannels: ChannelData[] = await db('channels')
           .select('*')
-          .where('last_update', '<=', Date.now() - (15 * 60 * 1000))
+          .where('last_update', '<=', Date.now() - (updateTimes.channels * 60 * 1000))
           .distinct();
 
         outChannels.map(async (channelData, index) => {
@@ -48,11 +54,13 @@ class Data {
   async updateGuilds(): Promise<any> {
     const updatePromisse: Promise<any> = new Promise(async (resolve: Function, reject: Function) => {
       try {
+        // Buscar todos servidores atualizados a mais de 25min
         const outGuilds: GuildData[] = await db('guilds')
           .select('*')
-          .where('last_update', '<=', Date.now() - (25 * 60 * 1000))
+          .where('last_update', '<=', Date.now() - (updateTimes.guilds * 60 * 1000))
           .distinct();
 
+        // 
         outGuilds.map(async (GuildData, index) => {
           const newGuildData: GuildData = GuildData;
 
@@ -61,15 +69,34 @@ class Data {
             .where('guild_id', '=', newGuildData.id)
             .distinct();
 
-          if (guildChannels.length <= 0) return resolve();
+          // Verificar se o servidor tem canais
+          if (guildChannels.length > 0) {
+            newGuildData.best_t_channel = guildChannels
+              .filter(guild => guild.type === 'text')
+              .sort((a, b) => b.average - a.average)[0].id;
+            /* newGuildData.best_v_channel = ''; */
+          };
 
+          // Salvar a ultima vez que foi atualizada
           newGuildData.last_update = Date.now();
-          newGuildData.best_t_channel = guildChannels
-            .filter(guild => guild.type === 'text')
-            .sort((a, b) => b.average - a.average)[0].id;
-          /* newGuildData.best_v_channel = ''; */
 
+          // Buscar os usuários que entraram nas ultimas 24h
+          const guildUsers: GuildUserData[] = await db('guilds_users')
+            .select('*')
+            .where('guild_id', '=', newGuildData.id)
+            .where('date', '>=', Date.now() - (1000 * 60 * 60 * 24))
+            .distinct();
+
+          newGuildData.joined_amount = guildUsers
+            .filter(user => user.action === 'join').length;
+
+          newGuildData.quited_amount = guildUsers
+            .filter(user => user.action === 'quit').length;
+
+          // Salvar novas infos
           await db('guilds').where('id', '=', newGuildData.id).update(newGuildData);
+
+          // Finalizar a promise se essa for a ultima
           if (index + 1 === outGuilds.length) resolve();
         });
 
@@ -118,7 +145,7 @@ const event: BotEvent = {
         await update;
         status.guilds = true;
       }
-    }, 10 * 60 * 1000)
+    }, updateTimes.verify * 60 * 1000)
 
   },
 };

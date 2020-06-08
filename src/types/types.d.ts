@@ -5,7 +5,7 @@ import {
 } from 'discord.js';
 
 interface RunCommand {
-  (Bot: Client, msg: Message, args: string[]): void;
+  (Bot: Client, msg: Message, args?: string[]): void;
 }
 
 export interface Command {
@@ -36,6 +36,8 @@ export interface GuildData {
   prefix: string,
   best_t_channel: string,
   best_v_channel: string,
+  joined_amount: number,
+  quited_amount: number,
   last_update: number,
 }
 
@@ -59,6 +61,15 @@ export interface MessageData {
 export interface UserData {
   id: string,
   username: string,
+}
+
+export interface GuildUserData {
+  id?: number,
+  user_id: string,
+  username: string,
+  guild_id: string,
+  action: string,
+  date: number,
 }
 
 /* Estrutura do banco de dados */
