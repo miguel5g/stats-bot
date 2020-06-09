@@ -26,6 +26,8 @@ class CommandsLoader {
 
               this.Bot.commands.set(commandProps.name, commandProps);
 
+              commandProps.aliases.map(aliase => this.Bot.aliases.set(aliase, commandProps.name));
+
               console.log(`Successfully loaded ${commandFile}`);
             } catch (err) {
               console.error(`Error while trying to load ${commandFile} - ${err.message}`);
