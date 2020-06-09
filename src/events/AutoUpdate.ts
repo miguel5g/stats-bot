@@ -71,9 +71,15 @@ class Data {
 
           // Verificar se o servidor tem canais
           if (guildChannels.length > 0) {
+            // Canais de texto
             newGuildData.best_t_channel = guildChannels
               .filter(guild => guild.type === 'text')
               .sort((a, b) => b.average - a.average)[0].id;
+            newGuildData.worse_t_channel = guildChannels
+              .filter(guild => guild.type === 'text')
+              .sort((a, b) => a.average - b.average)[0].id;
+
+            // Canais de voz
             /* newGuildData.best_v_channel = ''; */
           };
 

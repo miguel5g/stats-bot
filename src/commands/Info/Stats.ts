@@ -1,4 +1,7 @@
 import { MessageEmbed } from 'discord.js';
+// @ts-ignore Modúlo não exporta tipos
+import timeToDate from 'timestamp-to-date';
+
 import { Command, GuildData } from '../../types/types';
 import db from '../../database/Connection';
 
@@ -22,32 +25,26 @@ const command: Command = {
       .first();
 
     const guildValues = `
-    **Quantidade de membros:** ${Bot.users.cache.size}
+    **Servidor criado em:** \`${timeToDate(msg.guild?.createdTimestamp, 'dd/MM/yyyy HH:mm:ss')}\`
+    **Quantidade de membros:** \`${Bot.users.cache.size}\`
+    **Id do servidor:** \`${msg.guild?.id}\`
+    **Quantidade de canais de texto:** \`${msg.guild?.channels.cache.filter(channel => channel.type !== 'voice').size}\`
+    **Quantidade de canais de voz:** \`${msg.guild?.channels.cache.filter(channel => channel.type === 'voice').size}\`
+    **Mensagens por hora:**
     `;
 
-    const bestTChanel = (guildData.best_t_channel ?
-      `<#${guildData.best_t_channel}>`
-      /* msg.guild?.channels.cache.get(guildData.best_t_channel) */
-      :
-      'Nenhum'
-    );
-
-    const bestVChanel = (guildData.best_v_channel ?
-      msg.guild?.channels.cache.get(guildData.best_v_channel)
-      :
-      'Nenhum'
-    );
-
     const channelsValues = `
-    **Canal de texto mais usado:** ${bestTChanel}
-    **Canal de texto menos usado:**
-    **Canal de voz mais usado:** ${bestVChanel}
-    **Canal de voz menos usado:**
+    **Canal de texto mais usado:** ${(guildData.best_t_channel ? `<#${guildData.best_t_channel}>` : '\`Nenhum\`')}
+    **Canal de texto menos usado:** ${(guildData.worse_t_channel ? `<#${guildData.worse_t_channel}>` : '\`Nenhum\`')}
+    **Canal de voz mais usado:** ${(guildData.best_v_channel ? `<#${guildData.best_v_channel}>` : '\`Nenhum\`')}
+    **Canal de voz menos usado:** ${(guildData.worse_v_channel ? `<#${guildData.worse_v_channel}>` : '\`Nenhum\`')}
     `;
 
     const usersValues = `
-    **Récem chegados(24h):** ${guildData.joined_amount}
-    **Sairam(24h):** ${guildData.quited_amount}
+    **Membro mais ativo:**
+    **Membro menos ativo:**
+    **Récem chegados(24h):** \`${guildData.joined_amount}\`
+    **Sairam(24h):** \`${guildData.quited_amount}\`
     `;
 
     // Criar cada fild com os valores

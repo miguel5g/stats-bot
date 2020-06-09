@@ -36,6 +36,8 @@ export interface GuildData {
   prefix: string,
   best_t_channel: string,
   best_v_channel: string,
+  worse_t_channel: string,
+  worse_v_channel: string,
   joined_amount: number,
   quited_amount: number,
   last_update: number,

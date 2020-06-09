@@ -4,6 +4,10 @@
 /build
 .env
 *.sqlite
+yarn.lock
+
+# Temp
+src/database/migrations/010_add_guilds_colum.ts
 
 # Logs
 logs
