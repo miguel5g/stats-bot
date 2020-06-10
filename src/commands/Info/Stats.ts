@@ -30,10 +30,11 @@ const command: Command = {
     **Id do servidor:** \`${msg.guild?.id}\`
     **Quantidade de canais de texto:** \`${msg.guild?.channels.cache.filter(channel => channel.type !== 'voice').size}\`
     **Quantidade de canais de voz:** \`${msg.guild?.channels.cache.filter(channel => channel.type === 'voice').size}\`
-    **Mensagens por hora:**
+    **Mensagens por hora:** \`${guildData.day_messages}\`
     `;
 
     const channelsValues = `
+    **OBS:** Mais usados na ultima 1 hora
     **Canal de texto mais usado:** ${(guildData.best_t_channel ? `<#${guildData.best_t_channel}>` : '\`Nenhum\`')}
     **Canal de texto menos usado:** ${(guildData.worse_t_channel ? `<#${guildData.worse_t_channel}>` : '\`Nenhum\`')}
     **Canal de voz mais usado:** ${(guildData.best_v_channel ? `<#${guildData.best_v_channel}>` : '\`Nenhum\`')}
@@ -41,8 +42,8 @@ const command: Command = {
     `;
 
     const usersValues = `
-    **Membro mais ativo:**
-    **Membro menos ativo:**
+    **Membro mais ativo:** ${(guildData.most_active_user ? `<@${guildData.most_active_user}>` : '`Nenhum`')}
+    **Membro menos ativo:** ${(guildData.less_active_user ? `<@${guildData.less_active_user}>` : '`Nenhum`')}
     **Récem chegados(24h):** \`${guildData.joined_amount}\`
     **Sairam(24h):** \`${guildData.quited_amount}\`
     `;

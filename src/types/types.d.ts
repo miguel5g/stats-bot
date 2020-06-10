@@ -38,6 +38,9 @@ export interface GuildData {
   best_v_channel: string,
   worse_t_channel: string,
   worse_v_channel: string,
+  most_active_user: string,
+  less_active_user: string,
+  day_messages: number,
   joined_amount: number,
   quited_amount: number,
   last_update: number,
@@ -70,8 +73,17 @@ export interface GuildUserData {
   user_id: string,
   username: string,
   guild_id: string,
-  action: string,
+  action: 'join' | 'quit',
   date: number,
+}
+
+export interface UserActiveData {
+  id?: number,
+  user_id: string,
+  channel_id: string,
+  guild_id: string,
+  action: 'send_message' | 'join_voice_channel',
+  created_at: number,
 }
 
 /* Estrutura do banco de dados */

@@ -2,12 +2,13 @@
 /node_modules
 /.vscode
 /build
+**/test
 .env
 *.sqlite
 yarn.lock
 
 # Temp
-src/database/migrations/010_add_guilds_colum.ts
+src/database/migrations/1010**.ts
 
 # Logs
 logs

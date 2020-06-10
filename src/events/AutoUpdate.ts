@@ -1,6 +1,6 @@
 import { Client } from 'discord.js';
 
-import { BotEvent, ChannelData, MessageData, GuildData, GuildUserData } from "../types/types";
+import { BotEvent, ChannelData, MessageData, GuildData, GuildUserData, UserActiveData } from "../types/types";
 import db from '../database/Connection';
 
 const updateTimes = {
@@ -98,6 +98,43 @@ class Data {
 
           newGuildData.quited_amount = guildUsers
             .filter(user => user.action === 'quit').length;
+
+          const guildMessages: MessageData[] = await db('messages')
+            .select('*')
+            .where('guild_id', '=', newGuildData.id)
+            .where('created_at', '>=', Date.now() - (1000 * 60 * 60 * 1));
+
+          newGuildData.day_messages = guildMessages.length;
+
+          // Atualizar usuários mais ativos
+          const usersActive: UserActiveData[] = await db('users_active')
+            .select('*')
+            .where('guild_id', '=', newGuildData.id)
+            .where('created_at', '>=', Date.now() - (1000 * 60 * 60 * 24 * 10));
+
+          const serializedUsersActive = {};
+
+          usersActive.map(active => {
+            // @ts-ignore
+            if (serializedUsersActive[active.user_id]) {
+              // @ts-ignore
+              serializedUsersActive[active.user_id].push(active);
+            } else {
+              // @ts-ignore
+              serializedUsersActive[active.user_id] = [active];
+            }
+          });
+
+          const filteredUsersActive = Object.keys(serializedUsersActive).map(key => {
+            return {
+              user_id: key,
+              // @ts-ignore
+              active_amount: serializedUsersActive[key].length
+            };
+          }).sort((a, b) => b.active_amount - a.active_amount);
+
+          newGuildData.most_active_user  = filteredUsersActive[0].user_id;
+          newGuildData.less_active_user = filteredUsersActive.reverse()[0].user_id;
 
           // Salvar novas infos
           await db('guilds').where('id', '=', newGuildData.id).update(newGuildData);

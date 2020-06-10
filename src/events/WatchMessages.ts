@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 
-import { BotEvent, GuildData, MessageData, UserData, ChannelData } from "../types/types";
+import { BotEvent, GuildData, MessageData, UserData, ChannelData, UserActiveData } from "../types/types";
 import db from '../database/Connection';
 
 const event: BotEvent = {
@@ -69,6 +69,19 @@ const event: BotEvent = {
       };
 
       await db('channels').insert(newChannel);
+    }
+
+    // Adicionar atividade
+    if (msg.author.lastMessage && (Date.now() - msg.author.lastMessage.createdTimestamp) / 1000 <= 2) {
+      const userActive: UserActiveData = {
+        user_id: msg.author.id,
+        channel_id: msg.channel.id,
+        guild_id: msg.guild?.id || '',
+        action: 'send_message',
+        created_at: Date.now()
+      };
+
+      await db('users_active').insert(userActive);
     }
   },
 };
