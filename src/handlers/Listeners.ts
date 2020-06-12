@@ -1,5 +1,7 @@
 import { Client } from 'discord.js';
 
+import { BotEvent } from '../types/types';
+
 export default (Bot: Client): void => {
 
   Bot.on('ready', () => {
@@ -7,7 +9,8 @@ export default (Bot: Client): void => {
 
     if (events) {
       events.map((event) => {
-        Bot.events.get(event)?.run(Bot);
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot);
       });
     }
   });
@@ -17,7 +20,8 @@ export default (Bot: Client): void => {
 
     if (events) {
       events.map((event) => {
-        Bot.events.get(event)?.run(Bot, msg);
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot, msg);
       });
     }
   });
@@ -27,7 +31,8 @@ export default (Bot: Client): void => {
 
     if (events) {
       events.map((event) => {
-        Bot.events.get(event)?.run(Bot, member);
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot, member);
       });
     }
   });
@@ -37,7 +42,8 @@ export default (Bot: Client): void => {
 
     if (events) {
       events.map((event) => {
-        Bot.events.get(event)?.run(Bot, member);
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot, member);
       });
     }
   });
@@ -47,7 +53,8 @@ export default (Bot: Client): void => {
 
     if (events) {
       events.map((event) => {
-        Bot.events.get(event)?.run(Bot, channel);
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot, channel);
       });
     }
   });
@@ -57,7 +64,8 @@ export default (Bot: Client): void => {
 
     if (events) {
       events.map((event) => {
-        Bot.events.get(event)?.run(Bot, channel);
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot, channel);
       });
     }
   });
@@ -67,7 +75,8 @@ export default (Bot: Client): void => {
 
     if (events) {
       events.map((event) => {
-        Bot.events.get(event)?.run(Bot, guild);
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot, guild);
       });
     }
   });
@@ -77,7 +86,8 @@ export default (Bot: Client): void => {
 
     if (events) {
       events.map((event) => {
-        Bot.events.get(event)?.run(Bot, guild);
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot, guild);
       });
     }
   });
