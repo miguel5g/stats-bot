@@ -2,6 +2,7 @@ import {
   Client,
   Message,
   ClientEvents,
+  PermissionResolvable,
 } from 'discord.js';
 
 interface RunCommand {
@@ -13,6 +14,8 @@ export interface Command {
   description: string,
   usage: string,
   aliases: string[],
+  permissions?: PermissionResolvable,
+  noPermission?: string,
   enable: boolean,
   dm: boolean,
   run: RunCommand,

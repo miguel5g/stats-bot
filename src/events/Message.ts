@@ -38,7 +38,15 @@ const event: BotEvent = {
     if (!command && aliase) command = Bot.commands.get(aliase);
 
     // Executar o comando
-    if (command) command.run(Bot, msg, args);
+    if (command) {
+      // Verificar se o usuário tem permissões
+      if (command.permissions) {
+        if (!msg.member.hasPermission(command.permissions)) return msg.channel.send(command.noPermission || '> Você não tem permissão para isso!');
+        command.run(Bot, msg, args)
+      } else [
+        command.run(Bot, msg, args)
+      ]
+    };
   },
 };
 
