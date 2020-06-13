@@ -4,8 +4,8 @@ import { BotEvent, GuildData, ChannelData } from "../types/types";
 import db from '../database/Connection';
 
 const event: BotEvent = {
-  name: 'GuildEnter',
-  description: 'Evento chamado quando o Bot entra em uma nova guild',
+  name: 'GuildQuit',
+  description: 'Evento chamado quando o Bot sai de uma guild',
   caller: 'guildDelete',
   enable: true,
   run: async (Bot, guild: Guild) => {
