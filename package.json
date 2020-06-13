@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": "12.x",
+    "yarn": "1.17.x"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "ts-node-dev --ignore-watch node_modules ./src/Index.ts",
