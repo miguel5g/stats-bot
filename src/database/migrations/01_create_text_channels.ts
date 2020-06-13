@@ -1,13 +1,12 @@
 import knex from 'knex';
 
 export async function up(knex: knex) {
-  return knex.schema.createTable('channels', table => {
+  return knex.schema.createTable('text_channels', table => {
     table.string('id').primary();
     table.string('guild_id')
       .notNullable()
       .references('id')
       .inTable('guilds');
-    table.string('type').notNullable();
     table.float('average').notNullable();
     table.integer('msg_per_hour').notNullable();
     table.integer('last_update').notNullable();

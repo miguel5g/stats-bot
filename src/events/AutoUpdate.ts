@@ -1,6 +1,6 @@
 import { Client } from 'discord.js';
 
-import { BotEvent, ChannelData, MessageData, GuildData, GuildUserData, UserActiveData } from "../types/types";
+import { BotEvent, TextChannelData, MessageData, GuildData, GuildUserData, UserActiveData } from "../types/types";
 import db from '../database/Connection';
 
 const updateTimes = {
@@ -19,13 +19,13 @@ class Data {
   async updateChannels(): Promise<any> {
     const updatePromisse = new Promise(async (resolve: Function, reject: Function) => {
       try {
-        const outChannels: ChannelData[] = await db('channels')
+        const outChannels: TextChannelData[] = await db('text_channels')
           .select('*')
           .where('last_update', '<=', Date.now() - (updateTimes.channels * 60 * 1000))
           .distinct();
 
         outChannels.map(async (channelData, index) => {
-          const newChannelData: ChannelData = channelData;
+          const newChannelData: TextChannelData = channelData;
 
           const lastMessages: MessageData[] = await db('messages')
             .select('*')
@@ -38,7 +38,7 @@ class Data {
           newChannelData.msg_per_hour = lastMessages.length;
           newChannelData.last_update = Date.now();
 
-          await db('channels').where('id', '=', newChannelData.id).update(newChannelData);
+          await db('text_channels').where('id', '=', newChannelData.id).update(newChannelData);
           if (index + 1 === outChannels.length) resolve();
         });
 
@@ -64,19 +64,22 @@ class Data {
         outGuilds.map(async (GuildData, index) => {
           const newGuildData: GuildData = GuildData;
 
-          const guildChannels: ChannelData[] = await db('channels')
+          const guildTextChannels: TextChannelData[] = await db('text_channels')
+            .select('*')
+            .where('guild_id', '=', newGuildData.id)
+            .distinct();
+
+          const guildVoiceChannels: TextChannelData[] = await db('voice_channels')
             .select('*')
             .where('guild_id', '=', newGuildData.id)
             .distinct();
 
           // Verificar se o servidor tem canais
-          if (guildChannels.length > 0) {
+          if (guildTextChannels.length > 0) {
             // Canais de texto
-            newGuildData.best_t_channel = guildChannels
-              .filter(guild => guild.type === 'text')
+            newGuildData.best_t_channel = guildTextChannels
               .sort((a, b) => b.average - a.average)[0].id;
-            newGuildData.worse_t_channel = guildChannels
-              .filter(guild => guild.type === 'text')
+            newGuildData.worse_t_channel = guildTextChannels
               .sort((a, b) => a.average - b.average)[0].id;
 
             // Canais de voz

@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 
-import { BotEvent, GuildData, MessageData, UserData, ChannelData, UserActiveData } from "../types/types";
+import { BotEvent, GuildData, MessageData, UserData, TextChannelData, UserActiveData } from "../types/types";
 import db from '../database/Connection';
 
 const event: BotEvent = {
@@ -25,6 +25,7 @@ const event: BotEvent = {
     if (!guildData) return console.error(new Error('Guild not found in database'));
 
     // Verificar se inicia com a prefix do servidor
+    // @ts-ignore
     if (msg.content.startsWith(guildData.prefix)) return;
 
     const message: MessageData = {
@@ -55,20 +56,19 @@ const event: BotEvent = {
     }
 
     // Procurar canal
-    const result = await db('channels').where('id', '=', msg.channel.id).first();
+    const result = await db('text_channels').where('id', '=', msg.channel.id).first();
 
     // Verificar se canal existe no banco de dados e se não cria-lo
     if (!result) {
-      const newChannel: ChannelData = {
+      const newChannel: TextChannelData = {
         id: msg.channel.id,
         guild_id: message.guild_id,
-        type: msg.channel.type,
         average: 0,
         msg_per_hour: 0,
         last_update: Date.now(),
       };
 
-      await db('channels').insert(newChannel);
+      await db('text_channels').insert(newChannel);
     }
 
     // Adicionar atividade

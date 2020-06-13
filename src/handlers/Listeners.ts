@@ -92,4 +92,15 @@ export default (Bot: Client): void => {
     }
   });
 
+  Bot.on('voiceStateUpdate', (oldVoiceState, newVoiceState) => {
+    const events = Bot.eventsCallers.get('voiceStateUpdate');
+
+    if (events) {
+      events.map((event) => {
+        const runEvent: BotEvent | undefined = Bot.events.get(event);
+        if (runEvent && runEvent.enable) runEvent.run(Bot, [oldVoiceState, newVoiceState]);
+      });
+    }
+  });
+
 };

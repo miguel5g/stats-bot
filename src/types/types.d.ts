@@ -36,6 +36,21 @@ export interface BotEvent {
 /* Estrutura do banco de dados */
 export interface GuildData {
   id: string,
+  prefix: string,
+  best_t_channel: string,
+  best_v_channel: string,
+  worse_t_channel: string,
+  worse_v_channel: string,
+  most_active_user: string,
+  less_active_user: string,
+  day_messages: number,
+  joined_amount: number,
+  quited_amount: number,
+  last_update: number,
+}
+
+export interface CreateGuildData {
+  id: string,
   prefix?: string,
   best_t_channel?: string,
   best_v_channel?: string,
@@ -49,12 +64,18 @@ export interface GuildData {
   last_update?: number,
 }
 
-export interface ChannelData {
+export interface TextChannelData {
   id: string,
   guild_id: string,
-  type: string,
   average: number,
   msg_per_hour: number,
+  last_update: number,
+}
+export interface VoiceChannelData {
+  id: string,
+  guild_id: string,
+  average: number,
+  conversation_hours: number,
   last_update: number,
 }
 

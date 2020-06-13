@@ -1,6 +1,6 @@
 import { Guild } from 'discord.js';
 
-import { BotEvent, GuildData, ChannelData } from "../types/types";
+import { BotEvent } from "../types/types";
 import db from '../database/Connection';
 
 const event: BotEvent = {
@@ -9,15 +9,16 @@ const event: BotEvent = {
   caller: 'guildDelete',
   enable: true,
   run: async (Bot, guild: Guild) => {
-    await db('guilds').delete().where('id', '=', guild.id);
+    await db('guilds').where('id', '=', guild.id).delete();
 
-    await db('channels').delete().where('guild_id', '=', guild.id);
+    await db('text_channels').where('guild_id', '=', guild.id).delete();
+    await db('voice_channels').where('guild_id', '=', guild.id).delete();
 
-    await db('messages').delete().where('guild_id', '=', guild.id);
+    await db('messages').where('guild_id', '=', guild.id).delete();
 
-    await db('guilds_users').delete().where('guild_id', '=', guild.id);
+    await db('guilds_users').where('guild_id', '=', guild.id).delete();
 
-    await db('users_active').delete().where('guild_id', '=', guild.id);
+    await db('users_active').where('guild_id', '=', guild.id).delete();
 
     console.log('Saí de um servidor');
   },

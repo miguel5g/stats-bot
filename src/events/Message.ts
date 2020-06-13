@@ -28,6 +28,7 @@ const event: BotEvent = {
     if (!msg.content.startsWith(guildData.prefix)) return;
 
     // Separar o nome do comando executado e argumentos passados
+    // @ts-ignore inpossivel ser nulo
     const cmd = msg.content.split(' ')[0].slice(guildData.prefix.length);
     const args = msg.content.split(' ').slice(1).filter(arg => arg !== '');
 
@@ -41,6 +42,7 @@ const event: BotEvent = {
     if (command) {
       // Verificar se o usuário tem permissões
       if (command.permissions) {
+        // @ts-ignore Impossível ser nulo
         if (!msg.member.hasPermission(command.permissions)) return msg.channel.send(command.noPermission || '> Você não tem permissão para isso!');
         command.run(Bot, msg, args)
       } else [
