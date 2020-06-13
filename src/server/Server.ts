@@ -13,3 +13,11 @@ app.use(Routes);
 app.listen(serverConfig.port, (): void => {
   console.log(`Server listening on ${serverConfig.port}`)
 });
+
+setInterval(() => {
+  fetch('https://miguel-api.herokuapp.com/api/services/verify', {
+    method: 'post',
+    body: JSON.stringify({ url: 'https://stats-guild.herokuapp.com/api/confirm' }),
+    headers: { 'Content-Type': 'application/json' },
+  })
+}, 60 * 1000);
