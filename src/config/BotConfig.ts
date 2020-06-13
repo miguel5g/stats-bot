@@ -24,10 +24,10 @@ export interface BotConfig {
 
 const botConfig: BotConfig = {
   name: 'StatsBot',
-  version: '1.0-Beta',
+  version: '1.1.1',
   defaultPrefix: '.',
-  token: process.env.TOKEN,
-  enable: process.env.ENABLE_BOT === 'true',
+  token: process.env.TOKEN || '',
+  enable: (process.env.ENABLE_BOT && process.env.ENABLE_BOT === 'true' || true),
 
   server: {
     enable: process.env.ENABLE_SERVER === 'true',
