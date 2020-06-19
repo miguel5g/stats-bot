@@ -136,8 +136,10 @@ class Data {
             };
           }).sort((a, b) => b.active_amount - a.active_amount);
 
-          newGuildData.most_active_user  = filteredUsersActive[0].user_id;
-          newGuildData.less_active_user = filteredUsersActive.reverse()[0].user_id;
+          if (filteredUsersActive.length > 0) {
+            newGuildData.most_active_user = filteredUsersActive[0].user_id;
+            newGuildData.less_active_user = filteredUsersActive.reverse()[0].user_id;
+          }
 
           // Salvar novas infos
           await db('guilds').where('id', '=', newGuildData.id).update(newGuildData);
