@@ -75,7 +75,7 @@ export interface VoiceChannelData {
   id: string,
   guild_id: string,
   average: number,
-  conversation_hours: number,
+  conversation_time: number,
   last_update: number,
 }
 
@@ -90,6 +90,7 @@ export interface MessageData {
 export interface UserData {
   id: string,
   username: string,
+  conversation_time: number,
 }
 
 export interface GuildUserData {
@@ -106,8 +107,13 @@ export interface UserActiveData {
   user_id: string,
   channel_id: string,
   guild_id: string,
-  action: 'send_message' | 'join_voice_channel',
+  action: 'send_message' | 'quit_voice_channel',
   created_at: number,
 }
 
 /* Estrutura do banco de dados */
+
+interface UserVoiceState {
+  channel_id: string,
+  started_at: number,
+}

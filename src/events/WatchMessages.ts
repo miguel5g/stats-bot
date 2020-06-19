@@ -50,6 +50,7 @@ const event: BotEvent = {
       const user: UserData = {
         id: msg.author.id,
         username: msg.author.username,
+        conversation_time: 0,
       };
 
       await db('users').insert(user);

@@ -1,7 +1,7 @@
 import 'discord.js';
 
 import { BotConfig } from '../config/BotConfig';
-import { Command, BotEvent } from './types';
+import { Command, BotEvent, UserVoiceState } from './types';
 
 declare module 'discord.js' {
   export interface Client {
@@ -10,6 +10,9 @@ declare module 'discord.js' {
     aliases: Collection<string, string>;
     eventsCallers: Collection<string, string[]>;
     channelsUpdates: Collection<string, number>;
+    voiceUsers:Collection<string, UserVoiceState>;
+    voiceChannels:Collection<string, number>;
+
     botConfig: BotConfig;
     startTime: number;
   }

@@ -32,7 +32,7 @@ const event: BotEvent = {
           id: channel.id,
           guild_id: guild.id,
           average: 0,
-          conversation_hours: 0,
+          conversation_time: 0,
           last_update: 0,
         });
       }
