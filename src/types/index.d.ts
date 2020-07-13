@@ -1,6 +1,6 @@
 import 'discord.js';
 
-import { BotConfig } from '../config/BotConfig';
+import { BotConfig } from './types';
 import { Command, BotEvent, UserVoiceState } from './types';
 
 declare module 'discord.js' {

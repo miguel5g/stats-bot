@@ -117,3 +117,23 @@ interface UserVoiceState {
   channel_id: string,
   started_at: number,
 }
+
+export interface BotConfig {
+  name: string,
+  version: string,
+  defaultPrefix: string,
+  token: string | undefined,
+  enable: boolean,
+
+  server: {
+    enable: boolean,
+    port: number | string,
+  },
+
+  devlopment: {
+    enable: boolean,
+    token: string | undefined,
+    enableBot: boolean,
+    enableServer: boolean,
+  },
+}
